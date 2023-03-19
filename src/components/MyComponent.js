@@ -18,7 +18,7 @@ const MyComponent = () => {
 
     return (
         <div>
-            <button onClick={handleShowModal} className="button-87 d-grid gap-2">Add User</button>
+            <button onClick={handleShowModal} className="button-87 d-grid gap-2">Open Modal</button>
 
             <Modal  show={showModal} onHide={handleCloseModal} className="my-modal">
                 <Modal.Header closeButton>

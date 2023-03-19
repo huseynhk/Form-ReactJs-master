@@ -53,15 +53,15 @@ const ShoppingCart = () => {
     setColor(color);
   };
 
-  const editItem = (index) => {
-    const newItems = [...items];
-    newItems[index] = { name, price, quantity };
-    setItems(newItems);
-    setName("");
-    setPrice(0);
-    setQuantity(1);
-    setColor(color);
-  };
+  // const editItem = (index) => {
+  //   const newItems = [...items];
+  //   newItems[index] = { name, price, quantity };
+  //   setItems(newItems);
+  //   setName("");
+  //   setPrice(0);
+  //   setQuantity(1);
+  //   setColor(color);
+  // };
 
   const removeItem = (index) => {
     const newItems = [...items];
@@ -90,76 +90,96 @@ const ShoppingCart = () => {
   );
 
   return (
-    <div>
+    <div >
       <UserForm color={color} />
-      <h1>Shopping Cart</h1>
       <div>
+       <h3 className="mt-5">Shopping Area</h3>
+       <label>Product Name</label>
         <input
           type="text"
           value={name}
           style={{ color }}
           onChange={(e) => setName(e.target.value)}
         />
+        <label>Product Price</label>
         <input
           type="number"
           value={price}
           style={{ color }}
           onChange={(e) => setPrice(Number(e.target.value))}
         />
+
+        <label>Product Count</label>
         <input
+          placeholder="Product Count"
           type="number"
           value={quantity}
           style={{ color }}
           onChange={(e) => setQuantity(Number(e.target.value))}
         />
-        <input
-          type="color"
-          value={color}
-          style={{ color }}
-          onChange={(e) => setColor(e.target.value)}
-        />
-        <button onClick={addItem}>Add Item</button>
+  
+        <button className="btn btn-info text-white my-2" onClick={addItem}>Add Item</button>
       </div>
-      <table>
+
+
+
+      <table  className="table border border-dark">
         <thead>
-          <tr>
+          <tr >
             <th>Name</th>
+            <th>Add Date</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Actions</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
           {items.map((item, index) => (
             <tr key={index}>
-              <td style={{ color }}>{item.name} {selectedDate.toLocaleDateString()} </td>
+              <td style={{ color }}>{item.name}  </td>
+              <td style={{ color }}> {selectedDate.toLocaleDateString()}</td>
               <td style={{ color }}>${item.price.toFixed(2)}</td>
               <td>
-                <button onClick={() => decreaseQuantity(index)}>-</button>
-                <span style={{ color }}> {item.quantity}</span>
-                <button onClick={() => increaseQuantity(index)}>+</button>
+                <button className="btn btn-warning text-white" onClick={() => decreaseQuantity(index)}>-</button>
+                <span className="mx-1" style={{ color }}> {item.quantity}</span>
+                <button className="btn btn-warning text-white" onClick={() => increaseQuantity(index)}>+</button>
               </td>
+             
+            
               <td>
-                <button onClick={() => editItem(index)}>Edit</button>
-                <button onClick={() => removeItem(index)}>Remove</button>
+              <button className="btn btn-danger text-white" onClick={() => removeItem(index)}>Remove</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <p className="btn btn-success text-white" style={{ color }}>Total Price: ${totalPrice.toFixed(2)} </p>
+
+   
+      
+            
+
+      <div className="d-flex justify-content-between align-items-center">
       <div>
+      <label className="mb-1" style={{ color }}>Date</label>
         <DatePicker
           selected={selectedDate}
           onChange={(date) => setSelectedDate(date)}
+          className="mb-4 border border-dark"
+          style={{ color }}
         />
       </div>
-      <p>Total Price: ${totalPrice.toFixed(2)}</p>
-      <div>
-        <p>Selected Date: {selectedDate.toLocaleDateString()}</p>
-      </div>
+      
+      <input
+          type="color"
+          value={color}
+          style={{ color }}
+          onChange={(e) => setColor(e.target.value)}
+          className="mb-3 border border-dark"
 
-      <div>
-        <button onClick={handleShowModal}>Open</button>
+        />
+        <button onClick={handleShowModal} className="btn btn-info text-white mt-2" >Color Page</button>
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
             <Modal.Title>Edit User</Modal.Title>
