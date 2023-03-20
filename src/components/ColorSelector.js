@@ -4,13 +4,14 @@ import Swal from "sweetalert2";
 
 const colors = [
   {
-    name: "Red",
-    color: "#ff0000",
-  },
-  {
     name: "Blue",
     color: "#0000ff",
   },
+  {
+    name: "Red",
+    color: "#ff0000",
+  },
+
   {
     name: "Green",
     color: "#00ff00",
@@ -152,7 +153,7 @@ const ColorSelector = () => {
           }}
         >
 
-          <h3 className="ms-1">{div.text}</h3>
+          <h4 className="ms-1">{div.text}</h4>
 
           <p className="mt-3">
             <button

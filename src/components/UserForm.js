@@ -131,10 +131,10 @@ const UserForm = (props) => {
         </button>
       </form>
 
-      <div className="users mt-2">
+      <div className="users mt-2 ">
         <h4>Users:</h4>
 
-        <table className="table border border-dark">
+        <table className="table border border-dark table-info">
           <thead>
             <tr className="border border-dark">
               <th className="border border-dark">First Name</th>

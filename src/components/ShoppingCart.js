@@ -121,12 +121,12 @@ const ShoppingCart = () => {
           onChange={(e) => setQuantity(Number(e.target.value))}
         />
   
-        <button className="btn btn-info text-white my-2" onClick={addItem}>Add Item</button>
+        <button className="btn btn-primary text-white my-2" onClick={addItem}>Add Item</button>
       </div>
 
 
 
-      <table  className="table border border-dark">
+      <table  className="table border border-dark table-primary">
         <thead>
           <tr >
             <th>Name</th>
@@ -139,7 +139,7 @@ const ShoppingCart = () => {
         <tbody>
           {items.map((item, index) => (
             <tr key={index}>
-              <td style={{ color }}>{item.name}  </td>
+              <td style={{ color }}>{item.name}</td>
               <td style={{ color }}> {selectedDate.toLocaleDateString()}</td>
               <td style={{ color }}>${item.price.toFixed(2)}</td>
               <td>
@@ -182,7 +182,7 @@ const ShoppingCart = () => {
           className="mb-3 border border-dark w-25"
 
         />
-        <button onClick={handleShowModal} className="btn btn-info text-white mt-2" id="add-title-button" >Add Title</button>
+        <button onClick={handleShowModal} className="btn btn-warning text-white mt-2">Add Title</button>
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
             <Modal.Title>Add Title</Modal.Title>
@@ -192,8 +192,7 @@ const ShoppingCart = () => {
           </Modal.Body>
 
           <Modal.Footer>
-            <button onClick={handleCloseModal}>Close</button>
-            <button onClick={handleCloseModal}>Save</button>
+            <button className="btn btn-danger rounded" onClick={handleCloseModal}>Close</button>
           </Modal.Footer>
         </Modal>
       </div>
