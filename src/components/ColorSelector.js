@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "./modal.css";
 import Swal from "sweetalert2";
 
@@ -26,7 +26,7 @@ const colors = [
   {
     name: "Orange",
     color: "#ff8e03",
-  }
+  },
 ];
 
 const ColorSelector = () => {
@@ -34,20 +34,23 @@ const ColorSelector = () => {
   const [text, setText] = useState("");
   const [divs, setDivs] = useState([]);
   const inputRef = useRef(null);
+  const [editingIndex, setEditingIndex] = useState(null);
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (inputRef.current) {
+  //     inputRef.current.focus();
+  //   }
+  // }, []);
 
   useEffect(() => {
     const storedDivs = JSON.parse(localStorage.getItem("divs"));
     if (storedDivs) {
       setDivs(storedDivs);
     }
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }, []);
-
 
   useEffect(() => {
     localStorage.setItem("divs", JSON.stringify(divs));
@@ -62,26 +65,35 @@ const ColorSelector = () => {
       });
       return;
     }
-  
+
     const newDiv = {
       backgroundColor: selectedColor,
       text: text,
     };
 
-    const updatedDivs = [...divs, newDiv];
-    setDivs(updatedDivs);
-    localStorage.setItem("divs", JSON.stringify(updatedDivs));
+    if (editingIndex === null) {
+      const updatedDivs = [...divs, newDiv];
+      setDivs(updatedDivs);
+      localStorage.setItem("divs", JSON.stringify(updatedDivs));
+    } else {
+      const updatedDivs = [...divs];
+      updatedDivs[editingIndex] = newDiv;
+      setDivs(updatedDivs);
+      localStorage.setItem("divs", JSON.stringify(updatedDivs));
+      setEditingIndex(null);
+    }
+
     setText("");
     setSelectedColor(null);
-  
-    // setDivs([...divs, newDiv]);
-    // setText("");
-    // setSelectedColor(null);
 
-    
   };
-  
-  
+
+  const editDiv = (index) => {
+    const divToEdit = divs[index];
+    setSelectedColor(divToEdit.backgroundColor);
+    setText(divToEdit.text);
+    setEditingIndex(index);
+  };
 
   const deleteDiv = (index) => {
     const updatedDivs = [...divs];
@@ -111,8 +123,7 @@ const ColorSelector = () => {
         style={{
           backgroundColor: selectedColor,
         }}
-      >
-      </input>
+      ></input>
 
       <input
         type="text"
@@ -126,20 +137,37 @@ const ColorSelector = () => {
         }}
       />
 
-      <button  className="rounded m-2 btn btn-success" onClick={createNewDiv}>Add Title</button>
+      <button className="rounded m-2 btn btn-success" onClick={createNewDiv}>
+        Add Title
+      </button>
 
       {divs.map((div, index) => (
         <div
           key={index}
-          className="rounded my-2 d-flex justify-content-between"
+          className="rounded my-2 d-flex  justify-content-between align-items-center"
           style={{
             backgroundColor: div.backgroundColor,
             padding: "5px",
-            color:"white"
+            color: "white",
           }}
         >
-          {div.text}
-          <button  className="rounded btn btn-dark" onClick={() => deleteDiv(index)}>Remove</button>
+
+          <h3 className="ms-1">{div.text}</h3>
+
+          <p className="mt-3">
+            <button
+              className="rounded btn btn-dark"
+              onClick={() => editDiv(index)}
+            >
+              Update
+            </button>
+            <button
+              className="rounded btn btn-dark mx-1"
+              onClick={() => deleteDiv(index)}
+            >
+              Remove
+            </button>
+          </p>
         </div>
       ))}
     </div>

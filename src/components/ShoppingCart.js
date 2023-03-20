@@ -12,6 +12,8 @@ const useLocalStorage = (key, initialValue) => {
     return item ? JSON.parse(item) : initialValue;
   });
 
+  
+
   useEffect(() => {
     window.localStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);
@@ -27,6 +29,7 @@ const ShoppingCart = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [color, setColor] = useState("#100");
   const [showModal, setShowModal] = useState(false);
+
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -179,7 +182,7 @@ const ShoppingCart = () => {
           className="mb-3 border border-dark w-25"
 
         />
-        <button onClick={handleShowModal} className="btn btn-info text-white mt-2" >Add Title</button>
+        <button onClick={handleShowModal} className="btn btn-info text-white mt-2" id="add-title-button" >Add Title</button>
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
             <Modal.Title>Add Title</Modal.Title>
