@@ -1,8 +1,7 @@
-import React, {useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import Swal from "sweetalert2";
 import "../App";
-
 
 const UserForm = (props) => {
   const { color } = props;
@@ -147,8 +146,8 @@ const UserForm = (props) => {
           <tbody>
             {users.map((user) => (
               <tr key={user.id}>
-                <td>{user.firstName}</td>
-                <td className="border border-dark">{user.lastName}</td>
+                <td  style={{ color }}>{user.firstName}</td>
+                <td style={{ color }} className="border border-dark">{user.lastName}</td>
                 <td className="border border-dark">
                   <button
                     className="btn btn-warning text-white"

@@ -176,13 +176,13 @@ const ShoppingCart = () => {
           value={color}
           style={{ color }}
           onChange={(e) => setColor(e.target.value)}
-          className="mb-3 border border-dark"
+          className="mb-3 border border-dark w-25"
 
         />
-        <button onClick={handleShowModal} className="btn btn-info text-white mt-2" >Color Page</button>
+        <button onClick={handleShowModal} className="btn btn-info text-white mt-2" >Add Title</button>
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Edit User</Modal.Title>
+            <Modal.Title>Add Title</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <ColorSelector />

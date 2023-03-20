@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useRef, useState, useEffect } from "react";
 import "./modal.css";
 import Swal from "sweetalert2";
 
@@ -23,12 +23,23 @@ const colors = [
     name: "Purple",
     color: "#800080",
   },
+  {
+    name: "Orange",
+    color: "#ff8e03",
+  }
 ];
 
 const ColorSelector = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [text, setText] = useState("");
   const [divs, setDivs] = useState([]);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   useEffect(() => {
     const storedDivs = JSON.parse(localStorage.getItem("divs"));
@@ -37,23 +48,40 @@ const ColorSelector = () => {
     }
   }, []);
 
+
   useEffect(() => {
     localStorage.setItem("divs", JSON.stringify(divs));
   }, [divs]);
 
   const createNewDiv = () => {
-    if (!selectedColor) 
-    return;
-
+    if (!selectedColor || !text) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Text ve Reng daxil edin",
+      });
+      return;
+    }
+  
     const newDiv = {
       backgroundColor: selectedColor,
       text: text,
     };
 
-    setDivs([...divs, newDiv]);
+    const updatedDivs = [...divs, newDiv];
+    setDivs(updatedDivs);
+    localStorage.setItem("divs", JSON.stringify(updatedDivs));
     setText("");
     setSelectedColor(null);
+  
+    // setDivs([...divs, newDiv]);
+    // setText("");
+    // setSelectedColor(null);
+
+    
   };
+  
+  
 
   const deleteDiv = (index) => {
     const updatedDivs = [...divs];
@@ -66,6 +94,7 @@ const ColorSelector = () => {
       {colors.map((color) => (
         <button
           key={color.name}
+          className="m-2 w-25 rounded"
           style={{
             backgroundColor: color.color,
           }}
@@ -76,34 +105,41 @@ const ColorSelector = () => {
       ))}
       <input
         type="color"
+        className="ms-2 w-25 rounded"
         value={text}
         onChange={(e) => setSelectedColor(e.target.value)}
         style={{
           backgroundColor: selectedColor,
         }}
-      ></input>
+      >
+      </input>
+
       <input
         type="text"
         value={text}
+        ref={inputRef}
+        className="rounded m-2 w-50"
+        placeholder="Enter Title"
         onChange={(e) => setText(e.target.value)}
         style={{
           backgroundColor: selectedColor,
         }}
       />
 
-      <button onClick={createNewDiv}>Create Div</button>
+      <button  className="rounded m-2 btn btn-success" onClick={createNewDiv}>Add Title</button>
 
       {divs.map((div, index) => (
         <div
           key={index}
+          className="rounded my-2 d-flex justify-content-between"
           style={{
             backgroundColor: div.backgroundColor,
-            padding: "10px",
-            marginBottom: "10px",
+            padding: "5px",
+            color:"white"
           }}
         >
           {div.text}
-          <button onClick={() => deleteDiv(index)}>Delete</button>
+          <button  className="rounded btn btn-dark" onClick={() => deleteDiv(index)}>Remove</button>
         </div>
       ))}
     </div>
