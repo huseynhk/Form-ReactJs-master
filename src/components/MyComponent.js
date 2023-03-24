@@ -1,20 +1,49 @@
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Table from "./Table";
+import ColorSelector from "./ColorSelector";
+
 
 const MyComponent = () => {
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
 
-  const handleShowModal = () => {
-    setShowModal(true);
+  // const handleShowModal = () => {
+  //   setShowModal(true);
+  // };
+
+  // const handleCloseModal = () => {
+  //   setShowModal(false);
+  // };
+
+  const [showTable, setShowTable] = useState(false);
+  const [showColor, setShowColor] = useState(false);
+
+
+  const handleShowTable = () => {
+    setShowTable(true);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+
+  const handleCloseTable = () => {
+    setShowTable(false);
   };
 
   return (
     <div>
+
+      {showTable && <Table />}
+      <button onClick={handleShowTable} className="btn button-87 text-white ">
+        Add Table
+      </button>
+      <button onClick={handleCloseTable} className="btn button-87 text-white">
+        Close Table
+      </button>
+
+
+
+
+
+{/* 
       <button onClick={handleShowModal} className="button-87 d-grid gap-2">
         Open Modal
       </button>
@@ -34,15 +63,31 @@ const MyComponent = () => {
             Save
           </button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
+
+      {/* <button onClick={handleShowModal} className="btn btn-warning text-white mt-2">Add Title</button>
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add Title</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ColorSelector />
+          </Modal.Body>
+
+          <Modal.Footer>
+            <button className="btn btn-danger rounded" onClick={handleCloseModal}>Close</button>
+          </Modal.Footer>
+        </Modal>
       {showModal && (
         <style>
           {`.modal-dialog {
             max-width: 100vw !important;
             max-height: 100vh !important;
           }`}
-        </style>
-      )}
+        </style> */}
+
+        
+      {/* )} */}
     </div>
   );
 };

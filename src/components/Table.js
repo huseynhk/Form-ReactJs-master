@@ -5,6 +5,7 @@ import UserForm from "../components/UserForm";
 import ColorSelector from "./ColorSelector";
 import { Form, Modal, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
+import moment from 'moment';
 
 const Table = () => {
   const [firstName, setFirstName] = useState("");
@@ -16,7 +17,7 @@ const Table = () => {
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [color, setColor] = useState("#100");
+  const [color, setColor] = useState("#000");
   const inputRef = useRef(null);
 
 
@@ -58,7 +59,8 @@ const Table = () => {
       name,
       price,
       quantity,
-      id: Date.now(),
+      // id: Date.now(),
+       id: Math.random(),
       date: selectedDate.toISOString()
     };
     const updatedUsers = [...users, newUser];
@@ -277,7 +279,8 @@ const Table = () => {
                   </button>
                 </td>
                 <td>
-                  <td> {selectedDate.toLocaleDateString()}</td>
+                  {/* <td> {selectedDate.toLocaleDateString()}  </td> */}
+                  <td>{user.date.substring(0,10)}</td>
                 </td>
               </tr>
             ))}
@@ -333,6 +336,7 @@ const Table = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      <ColorSelector/>
     </div>
   );
 };
