@@ -16,7 +16,6 @@ const MyComponent = () => {
   // };
 
   const [showTable, setShowTable] = useState(false);
-  const [showColor, setShowColor] = useState(false);
 
 
   const handleShowTable = () => {

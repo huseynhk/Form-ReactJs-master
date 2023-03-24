@@ -5,7 +5,7 @@ import UserForm from "../components/UserForm";
 import ColorSelector from "./ColorSelector";
 import { Form, Modal, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
-import moment from 'moment';
+import moment from "moment";
 
 const Table = () => {
   const [firstName, setFirstName] = useState("");
@@ -20,14 +20,12 @@ const Table = () => {
   const [color, setColor] = useState("#000");
   const inputRef = useRef(null);
 
-
-
   useEffect(() => {
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
     setUsers(storedUsers);
     if (inputRef.current) {
-        inputRef.current.focus();
-      }
+      inputRef.current.focus();
+    }
   }, []);
 
   const handleShowModal = () => {
@@ -60,8 +58,8 @@ const Table = () => {
       price,
       quantity,
       // id: Date.now(),
-       id: Math.random(),
-      date: selectedDate.toISOString()
+      id: Math.random(),
+      date: selectedDate.toISOString(),
     };
     const updatedUsers = [...users, newUser];
     localStorage.setItem("users", JSON.stringify(updatedUsers));
@@ -97,7 +95,7 @@ const Table = () => {
           ...user,
           firstName,
           lastName,
-          date: selectedDate.toISOString()
+          date: selectedDate.toISOString(),
         };
       } else {
         return user;
@@ -134,13 +132,11 @@ const Table = () => {
     0
   );
 
-
   const handleColorChange = (index, color) => {
     const updatedUsers = [...users];
     updatedUsers[index].color = color;
     setUsers(updatedUsers);
     localStorage.setItem("users", JSON.stringify(updatedUsers));
-
   };
 
   return (
@@ -230,60 +226,66 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
-              <tr key={index} style={{ color: user.color }}>
-                <td>{user.firstName}</td>
-                <td  className="border border-dark">{user.lastName}</td>
-                <td className="border border-dark">{user.name}</td>
-                <td className="border border-dark">{user.price}</td>
+            {users.map((user, index) => {
+              const dateStr = user.date.substring(0, 10);
+              const date = new Date(dateStr);
+              date.setDate(date.getDate() + 1); 
+              const newDateStr = date.toISOString().substring(0, 10);
 
-                <td>
-                  <button
-                    className="btn btn-warning text-white"
-                    onClick={() => decreaseQuantity(index)}
-                  >
-                    -
-                  </button>
-                  <span className="mx-1"> {user.quantity}</span>
-                  <button
-                    className="btn btn-warning text-white"
-                    onClick={() => increaseQuantity(index)}
-                  >
-                    +
-                  </button>
-                </td>
+              return (
+                <tr key={index} style={{ color: user.color }}>
+                  <td>{user.firstName}</td>
+                  <td className="border border-dark">{user.lastName}</td>
+                  <td className="border border-dark">{user.name}</td>
+                  <td className="border border-dark">{user.price}</td>
 
-                <td className="border border-dark">
-                  <input
-                    type="color"
-                    value={user.color}
-                    onChange={(e) => handleColorChange(index, e.target.value)}
-                    className="mb-3 border border-dark w-25"
-                  />
-                </td>
+                  <td>
+                    <button
+                      className="btn btn-warning text-white"
+                      onClick={() => decreaseQuantity(index)}
+                    >
+                      -
+                    </button>
+                    <span className="mx-1"> {user.quantity}</span>
+                    <button
+                      className="btn btn-warning text-white"
+                      onClick={() => increaseQuantity(index)}
+                    >
+                      +
+                    </button>
+                  </td>
 
-                <td className="border border-dark">
-                  <button
-                    className="btn btn-warning text-white"
-                    onClick={() => handleEditUser(user.id)}
-                  >
-                    Edit
-                  </button>
-                </td>
-                <td className="border border-dark">
-                  <button
-                    className="btn btn-danger text-white"
-                    onClick={() => handleDeleteUser(user.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-                <td>
-                  {/* <td> {selectedDate.toLocaleDateString()}  </td> */}
-                  <td>{user.date.substring(0,10)}</td>
-                </td>
-              </tr>
-            ))}
+                  <td className="border border-dark">
+                    <input
+                      type="color"
+                      value={user.color}
+                      onChange={(e) => handleColorChange(index, e.target.value)}
+                      className="mb-3 border border-dark w-25"
+                    />
+                  </td>
+
+                  <td className="border border-dark">
+                    <button
+                      className="btn btn-warning text-white"
+                      onClick={() => handleEditUser(user.id)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                  <td className="border border-dark">
+                    <button
+                      className="btn btn-danger text-white"
+                      onClick={() => handleDeleteUser(user.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                  <td>
+                    <td>{newDateStr}</td>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
 
@@ -336,7 +338,7 @@ const Table = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <ColorSelector/>
+      <ColorSelector />
     </div>
   );
 };
