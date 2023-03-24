@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 
 const useLocalStorage = (key, initialValue) => {
   const [value, setValue] = useState(() => {
-    const item = window.localStorage.getItem(key);
+    const item = window.localStorage.getItem(key);//key localda arraya verdiyimiz ad
     return item ? JSON.parse(item) : initialValue;
   });
 
@@ -16,13 +16,13 @@ const useLocalStorage = (key, initialValue) => {
 
   useEffect(() => {
     window.localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
+  }, [key, value]);//value locala atilan array
 
   return [value, setValue];
 };
 
 const ShoppingCart = () => {
-  const [items, setItems] = useLocalStorage("cart", []);
+  const [items, setItems] = useLocalStorage("cart", []);//item localdan gelen arrya === dir
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -53,7 +53,6 @@ const ShoppingCart = () => {
     setName("");
     setPrice(0);
     setQuantity(1);
-    setColor(color);
   };
 
   // const editItem = (index) => {
@@ -177,7 +176,6 @@ const ShoppingCart = () => {
       <input
           type="color"
           value={color}
-          style={{ color }}
           onChange={(e) => setColor(e.target.value)}
           className="mb-3 border border-dark w-25"
 

@@ -81,9 +81,9 @@ const UserForm = (props) => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setModalUserId(null);
-    setFirstName("");
-    setLastName("");
+    // setModalUserId(null);
+    // setFirstName("");
+    // setLastName("");
   };
 
   return (
@@ -198,12 +198,13 @@ const UserForm = (props) => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+        <Button variant="primary" onClick={handleSaveUser}>
+            Save
+          </Button>
+          <Button variant="danger" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSaveUser}>
-            Save Changes
-          </Button>
+         
         </Modal.Footer>
       </Modal>
     </div>

@@ -11,7 +11,6 @@ const colors = [
     name: "Red",
     color: "#ff0000",
   },
-
   {
     name: "Green",
     color: "#00ff00",
@@ -34,14 +33,8 @@ const ColorSelector = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [text, setText] = useState("");
   const [divs, setDivs] = useState([]);
-  const inputRef = useRef(null);
   const [editingIndex, setEditingIndex] = useState(null);
-
-  // useEffect(() => {
-  //   if (inputRef.current) {
-  //     inputRef.current.focus();
-  //   }
-  // }, []);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const storedDivs = JSON.parse(localStorage.getItem("divs"));
@@ -52,6 +45,12 @@ const ColorSelector = () => {
       inputRef.current.focus();
     }
   }, []);
+
+  // useEffect(() => {
+  //   if (inputRef.current) {
+  //     inputRef.current.focus();
+  //   }
+  // }, []);
 
   useEffect(() => {
     localStorage.setItem("divs", JSON.stringify(divs));
@@ -78,7 +77,7 @@ const ColorSelector = () => {
       localStorage.setItem("divs", JSON.stringify(updatedDivs));
     } else {
       const updatedDivs = [...divs];
-      updatedDivs[editingIndex] = newDiv;
+      updatedDivs[editingIndex] = newDiv; //gelen deyer bos deyilse arrya daxil etsin
       setDivs(updatedDivs);
       localStorage.setItem("divs", JSON.stringify(updatedDivs));
       setEditingIndex(null);
@@ -86,7 +85,6 @@ const ColorSelector = () => {
 
     setText("");
     setSelectedColor(null);
-
   };
 
   const editDiv = (index) => {
@@ -149,10 +147,9 @@ const ColorSelector = () => {
           style={{
             backgroundColor: div.backgroundColor,
             padding: "5px",
-            color: "white",
+            color: "gray",
           }}
         >
-
           <h4 className="ms-1">{div.text}</h4>
 
           <p className="mt-3">
