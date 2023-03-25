@@ -99,6 +99,7 @@ const ColorSelector = () => {
 
   return (
     <div className="colorDivs">
+      <h1 className="m-2 text-danger" >Add Title</h1>
       {colors.map((color) => (
         <button
           key={color.name}

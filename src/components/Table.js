@@ -5,6 +5,10 @@ import "./modal.css";
 import ColorSelector from "./ColorSelector";
 import { Form, Modal, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
+import { BsFillTrashFill ,BsPatchPlus} from "react-icons/bs";
+import { FiEdit } from "react-icons/fi";
+import {AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
+
 
 const Table = () => {
   const [firstName, setFirstName] = useState("");
@@ -16,7 +20,7 @@ const Table = () => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [color, setColor] = useState("#000");
+  const [color] = useState("#000");
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -113,7 +117,6 @@ const Table = () => {
     const userIndex = users.findIndex((user) => user.id === modalUserId);
     const updatedUsers = [...users];
     updatedUsers[userIndex] = { ...updatedUsers[userIndex], ...newUser };
-
     localStorage.setItem("users", JSON.stringify(updatedUsers));
     setUsers(updatedUsers);
     setShowModal(false);
@@ -166,13 +169,10 @@ const Table = () => {
 
   return (
     <div
-      style={{
-        width: "100%",
-      }}
+      className="w-100"
     >
-      <form>
-        
-        <label className="my-1 h4 w-100">
+      <form> 
+        <label className="my-1 h4 w-100 ">
           First Name:
           <input
             className="input"
@@ -233,8 +233,8 @@ const Table = () => {
         </button>
       </form>
 
-      <div className="users mt-2 ">
-        <h4>Users:</h4>
+      <div className="users mt-2">
+        <h1 className="users my-3">Users:</h1>
 
         <table className="table border border-dark table-info">
           <thead>
@@ -245,8 +245,7 @@ const Table = () => {
               <th>Price</th>
               <th>Quantity</th>
               <th>Color</th>
-              <th>Update</th>
-              <th>Delete</th>
+              <th>Actions</th>
               <th>Date</th>
             </tr>
           </thead>
@@ -266,17 +265,17 @@ const Table = () => {
 
                   <td>
                     <button
-                      className="btn btn-warning text-white"
+                      className="btn btn-success text-white fs-5 "
                       onClick={() => decreaseQuantity(index)}
                     >
-                      -
+                      <AiOutlinePlusSquare/>
                     </button>
                     <span className="mx-1"> {user.quantity}</span>
                     <button
-                      className="btn btn-warning text-white"
+                      className="btn btn-success text-white fs-5"
                       onClick={() => increaseQuantity(index)}
                     >
-                      +
+                    <AiOutlineMinusSquare/>
                     </button>
                   </td>
 
@@ -291,20 +290,20 @@ const Table = () => {
 
                   <td>
                     <button
-                      className="btn btn-success text-white"
+                      className="btn btn-primary text-white "
                       onClick={() => handleEditUser(user.id)}
                     >
-                      Edit
+                      <FiEdit/>
                     </button>
-                  </td>
-                  <td>
+
                     <button
-                      className="btn btn-danger text-white"
+                      className="btn btn-danger text-white mx-2"
                       onClick={() => handleDeleteUser(user.id)}
                     >
-                      Delete
+                      <BsFillTrashFill/>
                     </button>
                   </td>
+                 
                   <td>
                     <td className="d-flex justify-content-center align-items-center unique">
                       <span className="">{newDateStr}</span>
