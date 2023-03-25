@@ -1,11 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import UserForm from "../components/UserForm";
+import "./modal.css";
 import ColorSelector from "./ColorSelector";
 import { Form, Modal, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
-import moment from "moment";
 
 const Table = () => {
   const [firstName, setFirstName] = useState("");
@@ -14,8 +13,8 @@ const Table = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalUserId, setModalUserId] = useState(null);
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [color, setColor] = useState("#000");
   const inputRef = useRef(null);
@@ -28,19 +27,17 @@ const Table = () => {
     }
   }, []);
 
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+  // const handleShowModal = () => {
+  //   setShowModal(true);
+  // };
 
   const handleAddUser = () => {
     if (
       firstName.trim() === "" ||
       lastName.trim() === "" ||
-      name.trim() === ""
+      name.trim() === "" ||
+      price <= 0 ||
+      quantity <= 0
     ) {
       Swal.fire({
         icon: "error",
@@ -57,7 +54,6 @@ const Table = () => {
       name,
       price,
       quantity,
-      // id: Date.now(),
       id: Math.random(),
       date: selectedDate.toISOString(),
     };
@@ -67,8 +63,8 @@ const Table = () => {
     setFirstName("");
     setLastName("");
     setName("");
-    setPrice(0);
-    setQuantity(1);
+    setPrice("");
+    setQuantity("");
     setSelectedDate(new Date());
   };
 
@@ -78,36 +74,65 @@ const Table = () => {
     setUsers(filteredUsers);
   };
 
+
+
   const handleEditUser = (id) => {
     const editedUser = users.find((user) => user.id === id);
     setFirstName(editedUser.firstName);
     setLastName(editedUser.lastName);
     setName(editedUser.name);
-    handleDeleteUser(id);
+    setPrice(editedUser.price);
+    setQuantity(editedUser.quantity);
     setShowModal(true);
     setModalUserId(id);
   };
-
   const handleSaveUser = () => {
-    const editedUsers = users.map((user) => {
-      if (user.id === modalUserId) {
-        return {
-          ...user,
-          firstName,
-          lastName,
-          date: selectedDate.toISOString(),
-        };
-      } else {
-        return user;
-      }
-    });
-    localStorage.setItem("users", JSON.stringify(editedUsers));
-    setUsers(editedUsers);
+    if (
+      firstName.trim() === "" ||
+      lastName.trim() === "" ||
+      name.trim() === "" ||
+      price <= 0 ||
+      quantity <= 0
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Bos saxlamaq olmaz!",
+        footer: '<a href="">Why do I have this issue?</a>',
+      });
+      return;
+    }
+    const newUser = {
+      firstName,
+      lastName,
+      name,
+      price,
+      quantity,
+      date: selectedDate.toISOString(),
+    };
+    const userIndex = users.findIndex((user) => user.id === modalUserId);
+    const updatedUsers = [...users];
+    updatedUsers[userIndex] = { ...updatedUsers[userIndex], ...newUser };
+
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    setUsers(updatedUsers);
     setShowModal(false);
+    setFirstName("");
+    setLastName("");
+    setName("");
+    setPrice("");
+    setQuantity("");
   };
 
-  const handleCloseModalEnter = () => {
+
+
+  const handleCloseModal = () => {
     setShowModal(false);
+    setFirstName("");
+    setLastName("");
+    setName("");
+    setPrice("");
+    setQuantity("");
   };
 
   const increaseQuantity = (index) => {
@@ -142,61 +167,61 @@ const Table = () => {
   return (
     <div
       style={{
-        width: "90rem",
+        width: "100%",
       }}
     >
-      <form
-        style={{
-          borderRadius: "30px",
-        }}
-      >
-        <label className="h4">
+      <form>
+        
+        <label className="my-1 h4 w-100">
           First Name:
           <input
-            className="FormC"
+            className="input"
             type="text"
             value={firstName}
             ref={inputRef}
             onChange={(e) => setFirstName(e.target.value)}
           />
         </label>
-        <label className="h4">
+
+        <label className="my-1 h4 w-100">
           Last Name:
           <input
-            className="FormC"
+            className="input"
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
         </label>
 
-        <label>Product Name</label>
+        <label className="my-1 h4">Product Name</label>
         <input
+          className="input"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <label>Product Price</label>
+        <label className="my-1 h4">Product Price</label>
         <input
+          className="input"
           type="number"
           value={price}
           onChange={(e) => setPrice(Number(e.target.value))}
         />
 
-        <label>Product Count</label>
+        <label className="my-1 h4">Product Count</label>
         <input
-          placeholder="Product Count"
+          className="input"
           type="number"
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
         />
-        <label className="mb-1" style={{ color }}>
+        <label className="my-1 h4" style={{ color }}>
           Date
         </label>
         <DatePicker
           selected={selectedDate}
           onChange={(date) => setSelectedDate(date)}
-          className="mb-4 border border-dark"
+          className="input mb-4"
         />
 
         <button
@@ -214,30 +239,30 @@ const Table = () => {
         <table className="table border border-dark table-info">
           <thead>
             <tr className="border border-dark">
-              <th className="border border-dark">F_Name</th>
-              <th className="border border-dark">L_Name</th>
-              <th className="border border-dark">P_Name</th>
-              <th className="border border-dark">Price</th>
-              <th className="border border-dark">Quantity</th>
-              <th className="border border-dark">Color</th>
-              <th className="border border-dark">Update</th>
-              <th className="border border-dark">Delete</th>
-              <th className="border border-dark">Date</th>
+              <th>F_Name</th>
+              <th>L_Name</th>
+              <th>P_Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Color</th>
+              <th>Update</th>
+              <th>Delete</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user, index) => {
               const dateStr = user.date.substring(0, 10);
               const date = new Date(dateStr);
-              date.setDate(date.getDate() + 1); 
+              date.setDate(date.getDate());
               const newDateStr = date.toISOString().substring(0, 10);
 
               return (
                 <tr key={index} style={{ color: user.color }}>
                   <td>{user.firstName}</td>
-                  <td className="border border-dark">{user.lastName}</td>
-                  <td className="border border-dark">{user.name}</td>
-                  <td className="border border-dark">{user.price}</td>
+                  <td>{user.lastName}</td>
+                  <td>{user.name}</td>
+                  <td>{user.price}</td>
 
                   <td>
                     <button
@@ -255,24 +280,24 @@ const Table = () => {
                     </button>
                   </td>
 
-                  <td className="border border-dark">
+                  <td className="d-flex justify-content-center align-items-center unique">
                     <input
                       type="color"
                       value={user.color}
                       onChange={(e) => handleColorChange(index, e.target.value)}
-                      className="mb-3 border border-dark w-25"
+                      className="my-2 w-75"
                     />
                   </td>
 
-                  <td className="border border-dark">
+                  <td>
                     <button
-                      className="btn btn-warning text-white"
+                      className="btn btn-success text-white"
                       onClick={() => handleEditUser(user.id)}
                     >
                       Edit
                     </button>
                   </td>
-                  <td className="border border-dark">
+                  <td>
                     <button
                       className="btn btn-danger text-white"
                       onClick={() => handleDeleteUser(user.id)}
@@ -281,7 +306,9 @@ const Table = () => {
                     </button>
                   </td>
                   <td>
-                    <td>{newDateStr}</td>
+                    <td className="d-flex justify-content-center align-items-center unique">
+                      <span className="">{newDateStr}</span>
+                    </td>
                   </td>
                 </tr>
               );
@@ -324,6 +351,20 @@ const Table = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter Pname"
+              />
+
+              <Form.Label>ProductPrice</Form.Label>
+              <Form.Control
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(Number(e.target.value))}
+              />
+
+              <Form.Label>ProductCount</Form.Label>
+              <Form.Control
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
               />
             </Form.Group>
           </Form>

@@ -1,4 +1,35 @@
-.colorDivs{
-    height: 500px; 
-    width: 600px;
-  }
+body {
+  background-color: aliceblue;
+}
+
+.colorDivs {
+  height: 500px;
+  width: 600px;
+}
+
+.main {
+  background-color: antiquewhite;
+}
+
+.input {
+  height: 40px;
+  width: 20%;
+  border: 2px solid black;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+table,
+thead,
+tbody,
+th,
+tr,
+td {
+  border: 2px solid black;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.unique {
+  border: none;
+}

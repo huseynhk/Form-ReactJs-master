@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import Modal from "react-bootstrap/Modal";
+// import Modal from "react-bootstrap/Modal";
 import Table from "./Table";
-import ColorSelector from "./ColorSelector";
 
 
 const MyComponent = () => {
@@ -37,8 +36,6 @@ const MyComponent = () => {
       <button onClick={handleCloseTable} className="btn button-87 text-white">
         Close Table
       </button>
-
-
 
 
 

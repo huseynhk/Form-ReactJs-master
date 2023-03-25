@@ -52,9 +52,6 @@ const ColorSelector = () => {
   //   }
   // }, []);
 
-  useEffect(() => {
-    localStorage.setItem("divs", JSON.stringify(divs));
-  }, [divs]);
 
   const createNewDiv = () => {
     if (!selectedColor || !text) {
