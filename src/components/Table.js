@@ -379,7 +379,6 @@ const Table = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <ColorSelector />
     </div>
   );
 };

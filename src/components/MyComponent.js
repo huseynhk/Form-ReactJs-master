@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import Modal from "react-bootstrap/Modal";
-import Table from "./Table";
+// import Table from "./Table";
 import TableReducer from "./TableReducer";
 
 

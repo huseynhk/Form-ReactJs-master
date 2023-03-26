@@ -30,6 +30,16 @@ td {
   text-align: center;
   font-size: 1.5rem;
 }
+table{
+  background-color: #f3e1d5;
+}
+
+tr:hover {
+  background-color: #fbebc7;
+  transition: .3s ease;
+
+
+}
 
 .unique {
   border: none;
@@ -50,3 +60,24 @@ td {
   padding: 1.5rem;
 }
 
+.colorDiv{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+#dvs{
+  position: relative;
+  left:120%;
+  bottom: 30%;
+  width: 75%;
+
+}
+
+#dvs2{
+  position: relative;
+  bottom: 65%;
+  width: 75%;
+}

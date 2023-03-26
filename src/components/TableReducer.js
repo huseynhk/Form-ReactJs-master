@@ -8,6 +8,7 @@ import { BsFillTrashFill } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
 import { AiFillCalendar } from "react-icons/ai";
+import ColorReducer from "./ColorReducer";
 
 const initialState = {
   firstName: "",
@@ -300,7 +301,7 @@ const TableReducer = () => {
       <button className="btn btn-warning text-white m-3" type="button" onClick={handleSortByPrice}>
         Sort By Price
       </button>
-      <table className="w-100">
+      <table className="w-100 ">
         <thead>
           <tr>
             <th>First Name</th>
@@ -453,8 +454,12 @@ const TableReducer = () => {
           </button>
         </form>
       </Modal>
-  
+
+
+    <ColorReducer/>
+
     </div>
+
     
   );
 };
