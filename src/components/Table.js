@@ -5,7 +5,7 @@ import "./modal.css";
 import ColorSelector from "./ColorSelector";
 import { Form, Modal, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
-import { BsFillTrashFill ,BsPatchPlus} from "react-icons/bs";
+import { BsFillTrashFill} from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import {AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
 
@@ -265,17 +265,18 @@ const Table = () => {
 
                   <td>
                     <button
-                      className="btn btn-success text-white fs-5 "
+                      className="btn btn-success text-white"
                       onClick={() => decreaseQuantity(index)}
                     >
-                      <AiOutlinePlusSquare/>
+                    <AiOutlineMinusSquare className="fs-4"/>
+
                     </button>
                     <span className="mx-1"> {user.quantity}</span>
                     <button
-                      className="btn btn-success text-white fs-5"
+                      className="btn btn-success text-white"
                       onClick={() => increaseQuantity(index)}
                     >
-                    <AiOutlineMinusSquare/>
+                      <AiOutlinePlusSquare className="fs-4"/>
                     </button>
                   </td>
 
@@ -293,14 +294,14 @@ const Table = () => {
                       className="btn btn-primary text-white "
                       onClick={() => handleEditUser(user.id)}
                     >
-                      <FiEdit/>
+                      <FiEdit className="fs-4"/>
                     </button>
 
                     <button
                       className="btn btn-danger text-white mx-2"
                       onClick={() => handleDeleteUser(user.id)}
                     >
-                      <BsFillTrashFill/>
+                      <BsFillTrashFill className="fs-4"/>
                     </button>
                   </td>
                  

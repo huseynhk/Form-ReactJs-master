@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 // import Modal from "react-bootstrap/Modal";
 import Table from "./Table";
+import TableReducer from "./TableReducer";
+
 
 
 const MyComponent = () => {
@@ -29,7 +31,7 @@ const MyComponent = () => {
   return (
     <div>
 
-      {showTable && <Table />}
+      {showTable && <TableReducer />}
       <button onClick={handleShowTable} className="btn button-87 text-white ">
         Add Table
       </button>
