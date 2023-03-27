@@ -33,7 +33,9 @@ const reducer = (state, action) => { //action  state-i kopya edib deyismek ucund
       return { ...state, lastName: action.payload };
 
     case "SET_USERS":
-      return { ...state, users: action.payload };
+      return { ...state, users: action.payload };//updatedUsers ve s.    users: action.payloada(updatedUsers)  beraber edirik
+
+                                                //state-i gotur onun icindeki  users:-i beraber ele action.payload  yani asagida olan updatedUsers ve s.
 
     case "SET_SHOW_MODAL":
       return { ...state, showModal: action.payload };
@@ -80,7 +82,7 @@ const reducer = (state, action) => { //action  state-i kopya edib deyismek ucund
 };
 
 const TableReducer = () => {
-  // state baslagic veziyyet dispatch ise actionlari idare etmeyimiz ucundu
+  // state baslagic veziyyetdi , dispatch ise actionlari idare etmeyimiz ucundu
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
     firstName,

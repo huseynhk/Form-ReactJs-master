@@ -1,5 +1,5 @@
 body {
-  background-color: rgb(235, 255, 255);
+  background-color: rgb(230, 255, 255);
 }
 
 .colorDivs {
@@ -26,18 +26,19 @@ tr,
 td {
   border: 3px solid black;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  cursor: pointer;
 }
 table{
   background-color: #f8efe9;
 }
 
 th{
-  background-color: #f6e0d2;
+  background-color: #fce2d2;
 }
 
 tr:hover {
-  background-color: #fbebc7;
+  background-color: #fce2d2;
   transition: .3s ease;
 }
 
@@ -66,7 +67,7 @@ tr:hover {
   justify-content: space-between;
   font-size: 1.6rem;
   margin-bottom: 5px;
-  border-radius: 3px;
+  border-radius: 5px;
 }
 
 .cs{
