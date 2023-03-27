@@ -9,6 +9,7 @@ import { FiEdit } from "react-icons/fi";
 import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
 import { AiFillCalendar } from "react-icons/ai";
 import ColorReducer from "./ColorReducer";
+import moment from 'moment';
 
 const initialState = {
   firstName: "",
@@ -23,10 +24,10 @@ const initialState = {
   color: "#000",
 };
 
-const reducer = (state, action) => {
+const reducer = (state, action) => { //action  state-i kopya edib deyismek ucundu
   switch (action.type) {
     case "SET_FIRST_NAME":
-      return { ...state, firstName: action.payload };
+      return { ...state, firstName: action.payload };//payload actionun icinde olan infolardi
 
     case "SET_LAST_NAME":
       return { ...state, lastName: action.payload };
@@ -53,14 +54,13 @@ const reducer = (state, action) => {
       return { ...state, selectedDate: action.payload };
 
     case "SET_COLOR":
-    case "SET_COLOR":
       const { index, color } = action.payload;
       const updatedUsers = [...state.users];
-      updatedUsers[index] = {
+      updatedUsers[index] = {   //actionu state-in icine atiram
         ...updatedUsers[index],
         color: color,
       };
-      localStorage.setItem("users", JSON.stringify(updatedUsers)); // save updated users array to local storage
+      localStorage.setItem("users", JSON.stringify(updatedUsers)); 
       return { ...state, users: updatedUsers };
 
     case "RESET_FORM":
@@ -80,6 +80,7 @@ const reducer = (state, action) => {
 };
 
 const TableReducer = () => {
+  // state baslagic veziyyet dispatch ise actionlari idare etmeyimiz ucundu
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
     firstName,
@@ -91,13 +92,16 @@ const TableReducer = () => {
     price,
     quantity,
     selectedDate,
-    color,
+    // color,
   } = state;
   const inputRef = useRef(null);
 
+
+
   useEffect(() => {
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    dispatch({ type: "SET_USERS", payload: storedUsers });
+    dispatch({ type: "SET_USERS", payload: storedUsers });// dispatch type: "SET_USERS  ile localdan get edirik
+                                                         //ona gorede users-de opsi deyisikleik lazim olanda bu case ile edirik
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -128,18 +132,38 @@ const TableReducer = () => {
       quantity,
       id: Math.random(),
       date: selectedDate.toISOString(),
-      color,
+      // color,
     };
     const updatedUsers = [...users, newUser];
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-    dispatch({ type: "SET_USERS", payload: updatedUsers });
+    localStorage.setItem("users", JSON.stringify(updatedUsers));//newUseri locala set edirem
+    dispatch({ type: "SET_USERS", payload: updatedUsers});//state-in ilkin veziyyetine dispatch ile newUseri-i icine update edirik
+                                                          // type: "SET_USERS" ile lazim ola yere gonderirik
     dispatch({ type: "RESET_FORM" });
   };
 
+
   const handleDeleteUser = (id) => {
-    const filteredUsers = users.filter((user) => user.id !== id);
-    localStorage.setItem("users", JSON.stringify(filteredUsers));
-    dispatch({ type: "SET_USERS", payload: filteredUsers });
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this user?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const filteredUsers = users.filter((user) => user.id !== id);
+        localStorage.setItem('users', JSON.stringify(filteredUsers));
+        dispatch({ type: 'SET_USERS', payload: filteredUsers });
+        Swal.fire({
+          icon: 'success',
+          title: 'User deleted',
+          text: 'The user has been deleted successfully',
+        });
+      }
+    });
   };
 
   const handleEditUser = (id) => {
@@ -206,13 +230,19 @@ const TableReducer = () => {
     const sortedUsers = [...users].sort((a, b) =>
       a.firstName.localeCompare(b.firstName)
     );
-    dispatch({ type: "SET_USERS", payload: sortedUsers });
+    dispatch({ type: "SET_USERS", payload: sortedUsers });//dispatch ile payload: sortedUsers-i  type:"SET_USERS"-a set edirik
   };
 
   const handleSortByPrice = () => {
     const sortedUsers = [...users].sort((a, b) => a.price - b.price);
     dispatch({ type: "SET_USERS", payload: sortedUsers });
   };
+
+  const handleSortByQuantity = () => {
+    const sortedUsers = [...users].sort((a, b) => a.quantity - b.quantity);
+    dispatch({ type: "SET_USERS", payload: sortedUsers });
+  };
+
 
   const increaseQuantity = (index) => {
     const updatedUsers = [...state.users];
@@ -239,7 +269,7 @@ const TableReducer = () => {
 
   return (
     <div>
-      <h1>Table</h1>
+      <h1>Welcome</h1>
       <form>
         <input
           type="text"
@@ -286,7 +316,6 @@ const TableReducer = () => {
           selected={selectedDate}
           onChange={handleDateChange}
           dateFormat="dd/MM/yyyy"
-        
         />
           <AiFillCalendar  className="fs-3 calendar"/>
           
@@ -294,6 +323,9 @@ const TableReducer = () => {
         <button className="btn btn-info text-white" type="button" onClick={handleAddUser}>
           Add User
         </button>
+
+
+
       </form>
       <button className="btn btn-warning text-white " type="button" onClick={handleSortByName}>
         Sort By Name
@@ -301,7 +333,13 @@ const TableReducer = () => {
       <button className="btn btn-warning text-white m-3" type="button" onClick={handleSortByPrice}>
         Sort By Price
       </button>
-      <table className="w-100 ">
+      <button className="btn btn-warning text-white" type="button" onClick={handleSortByQuantity}>
+        Sort By Quantity
+      </button>
+ 
+
+
+      <table className="w-100 text-capitalize">
         <thead>
           <tr>
             <th>First Name</th>
@@ -325,7 +363,7 @@ const TableReducer = () => {
               <button  className="btn btn-success text-white" onClick={() => decreaseQuantity(index)}>
                 <AiOutlineMinusSquare />
               </button>
-              <span className="mx-1" >  {user.quantity}</span>
+              <span className="mx-1" >  {user.quantity} </span>
               <button  className="btn btn-success text-white" onClick={() => increaseQuantity(index)}>
                 <AiOutlinePlusSquare />
               </button>
@@ -349,11 +387,13 @@ const TableReducer = () => {
               />
             </td>
 
-            <td>
+            {/* <td>
               {new Date(user.date.substring(0, 10))
                 .toISOString()
                 .substring(0, 10)}
-            </td>
+            </td> */}
+
+            <td>{moment(user.date.substring(0, 10)).format('DD.MM.YYYY')}</td>
           </tr>
         ))}
       </table>

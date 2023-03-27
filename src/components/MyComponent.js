@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import TableReducer from "./TableReducer";
 // import Modal from "react-bootstrap/Modal";
 // import Table from "./Table";
-import TableReducer from "./TableReducer";
 
 
 
@@ -19,25 +19,36 @@ const MyComponent = () => {
   const [showTable, setShowTable] = useState(false);
 
 
-  const handleShowTable = () => {
-    setShowTable(true);
-  };
+  // const handleShowTable = () => {
+  //   setShowTable(true);
+  // };
 
 
-  const handleCloseTable = () => {
-    setShowTable(false);
+  // const handleCloseTable = () => {
+  //   setShowTable(false);
+  // };
+
+
+  const toggleTable = () => {
+    setShowTable(!showTable);
   };
 
   return (
     <div>
 
       {showTable && <TableReducer />}
-      <button onClick={handleShowTable} className="btn button-87 text-white ">
+      <button onClick={toggleTable} className="btn button-87 text-white mx-auto">
+        {showTable ? "Close Table" : "Open Table"} 
+      </button>
+      {/*component aciqdirsa buttonda close yazsin eks halda open */}
+
+
+      {/* <button onClick={handleShowTable} className="btn button-87 text-white">
         Add Table
       </button>
       <button onClick={handleCloseTable} className="btn button-87 text-white">
         Close Table
-      </button>
+      </button> */}
 
 
 

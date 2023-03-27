@@ -7,9 +7,7 @@ body {
   width: 600px;
 }
 
-.main {
-  background-color: antiquewhite;
-}
+
 
 input {
   height: 2.5rem;
@@ -17,7 +15,7 @@ input {
   border: 2px solid black;
   font-size: 20px;
   border-radius: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 table,
@@ -31,7 +29,11 @@ td {
   font-size: 1.5rem;
 }
 table{
-  background-color: #f3e1d5;
+  background-color: #f8efe9;
+}
+
+th{
+  background-color: #f6e0d2;
 }
 
 tr:hover {
@@ -45,7 +47,7 @@ tr:hover {
 
 .calendar{
   position: absolute;
-  top: 41.5%;
+  top: 42.7%;
   right: 80%;
 }
 
@@ -54,7 +56,7 @@ tr:hover {
 }
 
 .modal-content {
-  height: 525px;
+  height: 550px;
   padding: 1.5rem;
 }
 
@@ -62,20 +64,31 @@ tr:hover {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  font-size: 2rem;
-  margin-bottom: 8px;
-  border-radius: 8px;
+  font-size: 1.6rem;
+  margin-bottom: 5px;
+  border-radius: 3px;
+}
+
+.cs{
+  position: relative;
+  left: 25%;
+  bottom: 12.5%;
+  margin-bottom: 1.6rem;
 }
 #dvs{
   position: relative;
   left:120%;
-  bottom: 30%;
+  bottom: 35%;
   width: 75%;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #dvs2{
   position: relative;
   bottom: 65%;
   width: 75%;
+  height: 9%;
+  text-transform: capitalize;
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useReducer, useEffect } from "react";
+import React, { useReducer, useEffect } from "react";
 import "./modal.css";
 import Swal from "sweetalert2";
 import { BsFillTrashFill } from "react-icons/bs";
@@ -45,7 +45,7 @@ const reducer = (state, action) => {
     case "SET_TEXT":
       return { ...state, text: action.payload };
     case "SET_DIVS":
-      return { ...state, divs: action.payload };
+      return { ...state, divs: action.payload }; // divs arrayinin icinde olan info dispatch ile ...state-e update olunur
     case "SET_EDITING_INDEX":
       return { ...state, editingIndex: action.payload };
     case "RESET_FORM":
@@ -62,7 +62,7 @@ const ColorReducer = () => {
   useEffect(() => {
     const storedDivs = JSON.parse(localStorage.getItem("divs"));
     if (storedDivs) {
-      dispatch({ type: "SET_DIVS", payload: storedDivs });
+      dispatch({ type: "SET_DIVS", payload: storedDivs });//localda olanlar "SET_DIVS"-e update olacaq
     }
   }, []);
 
@@ -82,17 +82,16 @@ const ColorReducer = () => {
     };
   
     if (editingIndex === null) {
-      const updatedDivs = [...divs, newDiv];
-      dispatch({ type: "SET_DIVS", payload: updatedDivs });
+      const updatedDivs = [...divs, newDiv];//null olsa ancaq newDiv-i gotursun
+      dispatch({ type: "SET_DIVS", payload: updatedDivs });//updatedDivs-i "SET_DIVS"-e set edirik
       localStorage.setItem("divs", JSON.stringify(updatedDivs));
     } else {
-      const updatedDivs = [...divs];
-      updatedDivs[editingIndex] = newDiv;
+      const updatedDivs = [...divs];//null deyilse tam arrayi yai gelen deyer editin olan elementin deyeridise
+      updatedDivs[editingIndex] = newDiv;// div-in icine newDiv-i atiriq
       dispatch({ type: "SET_DIVS", payload: updatedDivs });
       localStorage.setItem("divs", JSON.stringify(updatedDivs));
-      dispatch({ type: "SET_EDITING_INDEX", payload: null });
+      dispatch({ type: "SET_EDITING_INDEX", payload: null });//edit olan deyer oldugu ucun index deyerin deyismirik
     }
-  
     dispatch({ type: "RESET_FORM" });
   };
   
@@ -144,6 +143,7 @@ const ColorReducer = () => {
         }
       />
     ))}
+
     <input
       type="text"
       placeholder="Title"
@@ -154,15 +154,16 @@ const ColorReducer = () => {
         dispatch({ type: "SET_TEXT", payload: e.target.value })
       }
     />
+    
     <input
       id="colorInput"
       type="color"
-    //   value={selectedColor}
+      className="mb-4"
       onChange={(e) =>
         dispatch({ type: "SET_SELECTED_COLOR", payload: e.target.value })
       }
     />
-    <button className="btn btn-primary my-2" onClick={createNewDiv}>
+    <button className="btn btn-primary cs" onClick={createNewDiv}>
       {state.editingIndex === null ? "Create" : "Save"}
     </button>
     {colors.map((color, index) => (
@@ -170,7 +171,7 @@ const ColorReducer = () => {
         key={index}
         className="colorDiv"
         id="dvs"
-        style={{ backgroundColor: color.color }}
+        style={{backgroundColor: color.color}}
         onClick={() =>
           dispatch({ type: "SET_SELECTED_COLOR", payload: color.color })
         }
@@ -183,7 +184,7 @@ const ColorReducer = () => {
         key={index}
         className="colorDiv"
         id="dvs2"
-        style={{ backgroundColor: div.backgroundColor }}
+        style={{backgroundColor: div.backgroundColor}}
         onClick={() => editDiv(index)}
       >
         <span className="text">{div.text}</span>
