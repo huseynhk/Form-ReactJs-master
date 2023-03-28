@@ -104,6 +104,8 @@ const TableReducer = () => {
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
     dispatch({ type: "SET_USERS", payload: storedUsers });// dispatch type: "SET_USERS  ile localdan get edirik
                                                          //ona gorede users-de opsi deyisikleik lazim olanda bu case ile edirik
+
+                                                         
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -233,16 +235,21 @@ const TableReducer = () => {
       a.firstName.localeCompare(b.firstName)
     );
     dispatch({ type: "SET_USERS", payload: sortedUsers });//dispatch ile payload: sortedUsers-i  type:"SET_USERS"-a set edirik
+    localStorage.setItem("users", JSON.stringify(sortedUsers));
   };
 
   const handleSortByPrice = () => {
     const sortedUsers = [...users].sort((a, b) => a.price - b.price);
     dispatch({ type: "SET_USERS", payload: sortedUsers });
+    localStorage.setItem("users", JSON.stringify(sortedUsers));
+
   };
 
   const handleSortByQuantity = () => {
     const sortedUsers = [...users].sort((a, b) => a.quantity - b.quantity);
     dispatch({ type: "SET_USERS", payload: sortedUsers });
+    localStorage.setItem("users", JSON.stringify(sortedUsers));
+
   };
 
 
@@ -319,7 +326,7 @@ const TableReducer = () => {
           onChange={handleDateChange}
           dateFormat="dd/MM/yyyy"
         />
-          <AiFillCalendar  className="fs-3 calendar"/>
+          <AiFillCalendar  className="fs-2 calendar"/>
           
           
         <button className="btn btn-info text-white" type="button" onClick={handleAddUser}>
@@ -394,7 +401,6 @@ const TableReducer = () => {
                 .toISOString()
                 .substring(0, 10)}
             </td> */}
-
             <td>{moment(user.date.substring(0, 10)).format('DD.MM.YYYY')}</td>
           </tr>
         ))}
@@ -408,6 +414,8 @@ const TableReducer = () => {
         show={showModal}
         handleClose={handleModalClose}
         title="Update User"
+        onHide={handleModalClose}
+
       >
         <form>
           <div className="form-group ">

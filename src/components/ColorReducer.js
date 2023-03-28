@@ -2,7 +2,7 @@ import React, { useReducer, useEffect } from "react";
 import "./modal.css";
 import Swal from "sweetalert2";
 import { BsFillTrashFill } from "react-icons/bs";
-import { FiEdit } from "react-icons/fi";
+
 
 const colors = [
   {
@@ -36,6 +36,7 @@ const initialState = {
   text: "",
   divs: [],
   editingIndex: null,
+  showModal: false,
 };
 
 const reducer = (state, action) => {
@@ -50,6 +51,9 @@ const reducer = (state, action) => {
       return { ...state, editingIndex: action.payload };
     case "RESET_FORM":
       return { ...state, selectedColor: null, text: "", editingIndex: null };
+    case "SET_SHOW_MODAL":
+      return { ...state, showModal: action.payload };
+
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
@@ -57,12 +61,12 @@ const reducer = (state, action) => {
 
 const ColorReducer = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { selectedColor, text, divs, editingIndex } = state;
+  const {selectedColor, text, divs, editingIndex, showModal} = state;
 
   useEffect(() => {
     const storedDivs = JSON.parse(localStorage.getItem("divs"));
     if (storedDivs) {
-      dispatch({ type: "SET_DIVS", payload: storedDivs });//localda olanlar "SET_DIVS"-e update olacaq
+      dispatch({ type: "SET_DIVS", payload: storedDivs }); //localda olanlar "SET_DIVS"-e update olacaq
     }
   }, []);
 
@@ -75,36 +79,26 @@ const ColorReducer = () => {
       });
       return;
     }
-  
+
     const newDiv = {
       backgroundColor: selectedColor,
       text: text,
     };
-  
+
     if (editingIndex === null) {
-      const updatedDivs = [...divs, newDiv];//null olsa ancaq newDiv-i gotursun
-      dispatch({ type: "SET_DIVS", payload: updatedDivs });//updatedDivs-i "SET_DIVS"-e set edirik
+      const updatedDivs = [...divs, newDiv]; //null olsa ancaq newDiv-i gotursun
+      dispatch({ type: "SET_DIVS", payload: updatedDivs }); //updatedDivs-i "SET_DIVS"-e set edirik
       localStorage.setItem("divs", JSON.stringify(updatedDivs));
     } else {
-      const updatedDivs = [...divs];//null deyilse tam arrayi yai gelen deyer editin olan elementin deyeridise
-      updatedDivs[editingIndex] = newDiv;// div-in icine newDiv-i atiriq
+      const updatedDivs = [...divs]; //null deyilse tam arrayi yai gelen deyer editin olan elementin deyeridise
+      updatedDivs[editingIndex] = newDiv; // div-in icine newDiv-i atiriq
       dispatch({ type: "SET_DIVS", payload: updatedDivs });
       localStorage.setItem("divs", JSON.stringify(updatedDivs));
-      dispatch({ type: "SET_EDITING_INDEX", payload: null });//edit olan deyer oldugu ucun index deyerin deyismirik
+      dispatch({ type: "SET_EDITING_INDEX", payload: null }); //edit olan deyer oldugu ucun index deyerin deyismirik
+      dispatch({ type: "SET_SHOW_MODAL", payload: false });
     }
     dispatch({ type: "RESET_FORM" });
   };
-  
-
-
-  const editDiv = (index) => {
-    const divToEdit = divs[index];
-    dispatch({ type: "SET_SELECTED_COLOR", payload: divToEdit.backgroundColor });
-    dispatch({ type: "SET_TEXT", payload: divToEdit.text });
-    dispatch({ type: "SET_EDITING_INDEX", payload: index });
-    localStorage.setItem("divs", JSON.stringify(divs));
-  };
-
 
   
   const deleteDiv = (index) => {
@@ -125,85 +119,87 @@ const ColorReducer = () => {
             dispatch({ type: "SET_SELECTED_COLOR", payload: "" });
             localStorage.setItem("divs", JSON.stringify(updatedDivs));
             Swal.fire("Deleted!", "Your div has been deleted.", "success");
+            if (showModal) {
+              dispatch({ type: "SET_SHOW_MODAL", payload: false });
+            }
         }
       });
   };
-  
+
+
 
   return (
-    <div className="colorDivs" >
-    <h1 className="m-2 text-danger">Add Title</h1>
-    {colors.map((color, index) => (
-      <div
-        key={index}
-        className="colorButton "
-        style={{ backgroundColor: color.color }}
-        onClick={() =>
-          dispatch({ type: "SET_SELECTED_COLOR", payload: color.color })
+    <div className="colorDivs">
+      <h1 className="m-2 text-danger">Add Title</h1>
+      {colors.map((color, index) => (
+        <div
+          key={index}
+          className="colorButton"
+          style={{ backgroundColor: color.color }}
+          onClick={() =>
+            dispatch({ type: "SET_SELECTED_COLOR", payload: color.color })
+          }
+        />
+      ))}
+
+      <input
+        type="text"
+        placeholder="Title"
+        style={{ backgroundColor: selectedColor }}//161 ve 171 den gelir
+        value={state.text}
+        className="w-50"
+        onChange={(e) =>
+          dispatch({ type: "SET_TEXT", payload: e.target.value })//Text yazib oturmek ucun
         }
       />
-    ))}
 
-    <input
-      type="text"
-      placeholder="Title"
-      style={{backgroundColor: selectedColor}}
-      value={state.text}
-      className="w-50"
-      onChange={(e) =>
-        dispatch({ type: "SET_TEXT", payload: e.target.value })
-      }
-    />
-    
-    <input
-      id="colorInput"
-      type="color"
-      className="mb-4"
-      onChange={(e) =>
-        dispatch({ type: "SET_SELECTED_COLOR", payload: e.target.value })
-      }
-    />
-    <button className="btn btn-primary cs" onClick={createNewDiv}>
-      {state.editingIndex === null ? "Create" : "Save"}
-    </button>
-    {colors.map((color, index) => (
-      <div
-        key={index}
-        className="colorDiv"
-        id="dvs"
-        style={{backgroundColor: color.color}}
-        onClick={() =>
-          dispatch({ type: "SET_SELECTED_COLOR", payload: color.color })
+      <input
+        id="colorInput"
+        type="color"
+        className="mb-4"
+        onChange={(e) =>
+          dispatch({ type: "SET_SELECTED_COLOR", payload: e.target.value })//color inputunun rengin esas inputa oturmek ucun
         }
-      >
-        <span className="text">{color.name}</span>
-      </div>
-    ))}
-    {state.divs.map((div, index) => (
-      <div
-        key={index}
-        className="colorDiv"
-        id="dvs2"
-        style={{backgroundColor: div.backgroundColor}}
-        onClick={() => editDiv(index)}
-      >
-        <span className="text">{div.text}</span>
-        <p>
-        <button className="btn btn-dark " onClick={() => editDiv(index)}>
-        <FiEdit/>
-        </button>
-        <button className="btn btn-dark mx-2" onClick={() => deleteDiv(index)}>
-        <BsFillTrashFill/>
-        </button>
-        </p>
-      </div>
-    ))}
-  </div>
-);
+      />
+      <button className="btn btn-primary cs" onClick={createNewDiv}>
+        {state.editingIndex === null ? "Create" : "Save"}
+      </button>
+      {colors.map((color, index) => (
+        <div
+          key={index}
+          className="colorDiv"
+          id="dvs"
+          style={{ backgroundColor: color.color}}
+          onClick={() =>
+            dispatch({ type: "SET_SELECTED_COLOR", payload: color.color})//color div-lerindeki rengi esas inputa oturmek ucun
+          }
+        >
+          <span className="text">{color.name}</span>
+        </div>
+      ))}
+      {state.divs.map((div, index) => (
+        <div
+          key={index}
+          className="colorDiv"
+          id="dvs2"
+          style={{ backgroundColor: div.backgroundColor }}
+        >
+          <span className="text">{div.text}</span>
+          <p>
+        
+            <button
+              className="btn btn-dark mx-2"
+              onClick={() => deleteDiv(index)}
+            >
+              <BsFillTrashFill />
+            </button>
+          </p>
+        </div>
+      ))}
 
-
-
-
+  
+    </div>
+  );
 };
 
 export default ColorReducer;

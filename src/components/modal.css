@@ -48,7 +48,7 @@ tr:hover {
 
 .calendar{
   position: absolute;
-  top: 42.7%;
+  top: 42.5%;
   right: 80%;
 }
 
@@ -59,6 +59,12 @@ tr:hover {
 .modal-content {
   height: 550px;
   padding: 1.5rem;
+}
+
+.mc{
+  height: 275px;
+  padding: 0.75rem;
+  margin-top: 3rem;
 }
 
 .colorDiv{
